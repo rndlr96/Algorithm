@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 typedef struct node {
   int val;
@@ -63,11 +64,42 @@ void print(Node *root){
 }
 
 void delete(Node *root, int val){
-
+  if (root->val == NULL) {
+    printf("List is empty\n");
+  } else if (root->next == NULL) {
+    if (root->val == val) {
+      free(root);
+      printf("delete value : %d  delete state : success\n", val);
+    } else {
+      printf("delete value : %d  delete state : fail (%d is not contained in list)\n", val, val);
+    }
+  } else {
+    Node *tmp = root;
+    Node *tmp2 = tmp->next;
+    while(tmp2->next != NULL){
+      if (tmp2->val == val) {
+        tmp->next = tmp2->next;
+        free(tmp2);
+        printf("delete value : %d  delete state : success\n", val);
+        break;
+      } else {
+        tmp = tmp->next;
+        tmp2 = tmp2->next;
+      }
+    }
+    if(tmp2->next == NULL){
+      printf("delete value : %d  delete state : fail (%d is not contained in list)\n", val, val);
+    }
+  }
 }
 
 int main(void){
+  clock_t start, end;
   Node *root;
+
+  srand((unsigned int)time(NULL));
+  start = clock();
+
   root = init(root);
 
   root = insert(root, 3);
@@ -80,4 +112,12 @@ int main(void){
 
   search(root, 7);
   search(root, 8);
+
+  delete(root, 8);
+  delete(root, 7);
+  search(root, 7);
+
+  end = clock();
+
+  printf("%.3lf ms\n", (double)end-start);
 }

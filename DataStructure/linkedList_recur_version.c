@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 // typedef == 닉네임 설정 || 없다면 대괄호 옆은 변수 선
 typedef struct node {
@@ -88,11 +89,43 @@ void delete(Node * root, int val){
 }
 
 void swap(Node * root, int val1, int val2){
-  
+  Node *tmp1 = root;
+  Node *tmp2 = root;
+  int tmp;
+  if (root->val == NULL){
+    printf("List is empty\n");
+  } else {
+
+    for ( ; tmp1->next != NULL ; tmp1 = tmp1->next) {
+      if (tmp1->val == val1) {
+        break;
+      }
+    }
+    if (root->next == NULL) {
+      printf("search value : %d  search state : fail\n", val1);
+    }
+
+    for ( ; tmp2->next != NULL ; tmp2 = tmp2->next) {
+      if (tmp2->val == val2) {
+        break;
+      }
+    }
+    if (root->next == NULL) {
+      printf("search value : %d  search state : fail\n", val2);
+    }
+
+    tmp = tmp1->val;
+    tmp1->val = tmp2->val;
+    tmp2->val = tmp;
+  }
 }
 
 int main() {
+  clock_t start, end;
   Node *root;
+
+  srand((unsigned int)time(NULL));
+  start = clock();
 
   root = init(root);
 
@@ -110,4 +143,14 @@ int main() {
   delete(root, 8);
   delete(root, 7);
   search(root, 7);
+
+  end = clock();
+
+  printf("%.3lf ms\n", (double)end-start);
+
+  printf("before swap : ");
+  print(root);
+  swap(root, 3, 9);
+  printf("after swap : ");
+  print(root);
 }
