@@ -29,7 +29,10 @@ int main() {
     if(DP2[m][n] == 0){
         cout << DP[m][n];
     } else {
-        cout << DP2[m][n] << setfill('0') << setw(15) << DP[m][n];
+        cout << DP2[m][n];
+        cout.width(16); // 폭을 10으로 지정
+        cout.fill('0'); // 채움 문자는 '0'
+        cout << DP[m][n];
     }
     return 0;
 }
